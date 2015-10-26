@@ -1,0 +1,36 @@
+#include <cmath>
+#include <cstdio>
+#include <vector>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+bool isPrime(int n) {
+  if(n != 2 && n%2 == 0) return false;
+  for(int i = 3; i <= n*n; i++) {
+    if(n%i == 0) return false;
+  }
+  return true;
+}
+
+int main() {
+  /* Enter your code here. Read input from STDIN. Print output to STDOUT */
+  int T;
+  cin >> T;
+  while(T--) {
+    int N;
+    cin >> N;
+    vector<int> P(N+1);
+    P[0] = 1;
+    for(int i = 1; i <= N; i++) {
+      P[i] += P[i-1];
+      if(i-4 >= 0) P[i] += P[i-4];
+    }
+    int res = 0;
+    for(int i = 2; i <= P[N]; i++) {
+      if(isPrime(i)) res++;
+    }
+    cout << res << endl;
+  }
+  return 0;
+}

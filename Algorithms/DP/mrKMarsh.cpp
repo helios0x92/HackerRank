@@ -1,0 +1,40 @@
+#include <cmath>
+#include <cstdio>
+#include <vector>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+
+int main() {
+  /* Enter your code here. Read input from STDIN. Print output to STDOUT */
+  int M, N;
+  cin >> M >> N;
+  vector<string> L(M+1);//, vector<char>(N+1));
+  vector<vector<int>>  S(M+1, vector<int>(N+1));
+  for(int i = 1; i <= M; i++) {
+    string inS;
+    cin >> inS;
+    L[i] = " "+inS;
+    S[i][0] = 0;
+    for(int j = 1; j <= N; j++) {
+      S[i][j] = S[i][j-1] + (L[i][j] == 'x');
+    }
+  }
+  int res = 0;
+  for(int i = 1; i <= N; i++) {
+    for(int j = i+1; j <= N; j++) {
+      int p = -1;
+      for(int k = 1; k <= M; k++) {
+	if(S[k][j] - S[k][i-1] == 0) {
+	  if(p > 0) {
+	    res = max(res, 2*(j-i + k-p));
+	  } else if(p == -1) p = k;
+	} else if(L[k][i] == 'x' || L[k][j] == 'x') p = -1;
+      }
+    }
+  }
+  if(res > 0) cout << res << endl;
+  else cout << "impossible" << endl;
+  return 0;
+}
